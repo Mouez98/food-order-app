@@ -1,0 +1,8 @@
+.Card {
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    padding: 10px ;
+    /* max-width: 45rem; */
+    width: 600px
+}
