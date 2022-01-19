@@ -5,7 +5,7 @@ import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
   const mealList = DUMMY_MEALS.map((item) => (
-    <MealItem key={item.id} {...item} />
+    <MealItem key={item.id} {...item} item={item} />
   ));
   return (
     <Card className={classes.meals}>
