@@ -7,7 +7,7 @@ const Input = React.forwardRef((props,ref) => {
    const inputValueRef = useRef();
 
    useImperativeHandle(ref,()=>({
-       value: inputValueRef.current.value
+       amount: inputValueRef.current.value
    }))
    
    return <div className={classes.input} >

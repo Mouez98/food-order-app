@@ -1,20 +1,25 @@
 import React, {useRef, useContext} from "react";
+import { useState } from "react/cjs/react.development";
 
 import CartContext from "../../../store/cart-context";
 import Input from "../../UI/Input";
 import classes from "./MealItemForm.module.css";
 
 const MealItemForm = (props) => {
-  const cartCtx = useContext(CartContext)
+  const [isValidAMount , setValidAMount] = useState(true)
+  // const cartCtx = useContext(CartContext)
    const inputRef = useRef()
    const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(inputRef.current.value)
+    const enteredAmount = +inputRef.current.amount
+    
+    if(enteredAmount === 0 || enteredAmount > 6 ) {
+       setValidAMount(false)
+       return;
+    } 
+     props.addToCart(enteredAmount)
   }
-   let items = [...cartCtx.items]
-  const filterItemHandler = items.filter(item => {
-    return item.id === props.id
-  })
+  
 
   return (
     <form className={classes.form} onSubmit={onSubmitHandler}>
@@ -24,13 +29,13 @@ const MealItemForm = (props) => {
         input={{
           type: "number",
           id: "amount" + props.id,
-          min: 1,
+          min: 0,
           max: 5,
           step: 1,
           defaultValue: 1,
         }}
       />
-      <button onClick={cartCtx.addItem(filterItemHandler)}>+ Add</button>
+      <button type="submit">+ Add</button>
     </form>
   );
 };
