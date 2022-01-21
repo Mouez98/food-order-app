@@ -25,19 +25,19 @@ const CartContextProvider = (props) => {
     defaultCartState
   );
 
-  const addItem = (item) => {
+  const addItemHandler = (item) => {
     dispatchCartAction({ type: "ADD", item: item });
   };
 
-  const removeItem = (id) => {
+  const removeItemHandler = (id) => {
     dispatchCartAction({ type: "REMOVE", id: id });
   };
 
   const contextHelper = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
-    addItem: addItem,
-    removeItem: removeItem,
+    addItem: addItemHandler,
+    removeItem: removeItemHandler,
   };
   return (
     <CartContext.Provider value={contextHelper}>

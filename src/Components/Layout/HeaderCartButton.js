@@ -7,13 +7,13 @@ import classes from "./HeaderCartButton.module.css";
 
 const HeaderCartButton = () => {
   const ctx = useContext(CartContext);
+  const [showCart, setShowCart] = useState(false)
 
-  const numberOfCartItems = ctx.items.reduce((curNumber, item ) => {
+  const numberOfCartItems = ctx.items.reduce((curNumber, item) => {
     return curNumber + item.amount;
   }, 0);
 
-
-  const [showCart, setShowCart] = useState(false);
+  
 
   const showCartHandler = () => {
     setShowCart(!showCart);
