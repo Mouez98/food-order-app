@@ -12,10 +12,19 @@ const portalElement = document.getElementById("overlay");
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-
+  const hasItems = cartCtx.items.length > 0;
   const totalAmount = cartCtx.totalAmount.toFixed(2);
+  const cartAddItemHandler = (item) => {};
+  const cartRemoveItemHandler = (id) => {};
   const items = cartCtx.items.map((item) => {
-    return <CartContent {...item} key={item.id} />;
+    return (
+      <CartContent
+        {...item}
+        key={item.id}
+        onRemove={cartRemoveItemHandler.bind(null, item.id)}
+        onAdd={cartAddItemHandler.bind(null, item)}
+      />
+    );
   });
 
   return (
@@ -23,12 +32,14 @@ const Cart = (props) => {
       {items}
       <div className={classes.order}>
         <div>
-          <span>TotalAmount: </span>
-          <span>${totalAmount}</span>
+          <h4>TotalAmount: </h4>
+          <h4>${totalAmount}</h4>
         </div>
         <div>
-          <button className={classes.btnClose} onClick={props.close}>Close</button>
-          <button className={classes.btnOrder}>Order</button>
+          <button className={classes.btnClose} onClick={props.close}>
+            Close
+          </button>
+          {hasItems && <button className={classes.btnOrder}>Order</button>}
         </div>
       </div>
     </Card>

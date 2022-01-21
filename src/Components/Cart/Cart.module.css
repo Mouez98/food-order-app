@@ -4,12 +4,20 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
+  overflow-y: auto;
+  max-height: 20rem;
+  /* min-height: 100px; */
 }
 
 .order {
- 
   display: flex;
   justify-content: space-between;
+  padding: 10px;
+  z-index: 99;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  background-color: inherit;
 }
 
 .cart-items :is(.btnOrder, .btnClose) {
@@ -19,7 +27,7 @@
   border: 1px solid #8a2b06;
   padding: 5px ;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 25px;
   cursor: pointer;
   margin-left: 1rem;
   margin: 0.25rem;
@@ -46,7 +54,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #8a2b06;
+  border-bottom: 2px solid #363636;
   padding: 15px 0;
   margin: 1rem 0;
 }
