@@ -1,12 +1,11 @@
-import React, {useRef, useContext} from "react";
+import React, {useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
-import CartContext from "../../../store/cart-context";
 import Input from "../../UI/Input";
 import classes from "./MealItemForm.module.css";
 
 const MealItemForm = (props) => {
-  const [isValidAMount , setValidAMount] = useState(true)
+  const [isValidAmount , setValidAmount] = useState(true)
   // const cartCtx = useContext(CartContext)
    const inputRef = useRef()
    const onSubmitHandler = (event) => {
@@ -14,7 +13,7 @@ const MealItemForm = (props) => {
     const enteredAmount = +inputRef.current.amount
     
     if(enteredAmount === 0 || enteredAmount > 6 ) {
-       setValidAMount(false)
+       setValidAmount(false)
        return;
     } 
      props.addToCart(enteredAmount)

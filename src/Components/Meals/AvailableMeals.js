@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
-import Loading from '../../imported/loading'
+import Loading from "../../imported/Loading";
 import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [httpError, setHttpError] = useState();
 
   useEffect(() => {
     const fetchMeals = async () => {
       const response = await fetch(
         "https://react-http-94c27-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
       );
+      if (!response.ok)  {
+        throw new Error("Something went wrong");
+      }
       const data = await response.json();
-      let meals = []; 
+      let meals = [];
       for (const key in data) {
-
         meals.push({
           id: key,
           name: data[key].name,
@@ -25,15 +28,28 @@ const AvailableMeals = () => {
         });
       }
       setMeals(meals);
-      setLoading(false)
+      setLoading(false);
     };
-    fetchMeals()
+
+    fetchMeals().catch((error) => {
+      setLoading(false);
+      setHttpError(error.message);
+    });
   }, []);
-  
-  if(loading) {
-    return <section> 
-     <Loading />
-    </section>
+
+  if (loading) {
+    return (
+      <section>
+        <Loading />
+      </section>
+    );
+  }
+  if (httpError) {
+    return (
+      <section>
+        <h3 style={{ textAlign: "center", color: "red" }}>{httpError}</h3>
+      </section>
+    );
   }
 
   const mealList = meals.map((item) => (
