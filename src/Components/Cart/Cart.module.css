@@ -18,8 +18,8 @@
 }
 
 .order {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   padding: 10px;
   z-index: 99;
   position: sticky;
@@ -39,6 +39,12 @@
   cursor: pointer;
   margin-left: 1rem;
   margin: 0.25rem;
+}
+
+.btnAction {
+  width: fit-content;
+  margin-top: -50px;
+  margin-left: auto;
 }
 
 .btnOrder {

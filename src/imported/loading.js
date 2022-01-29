@@ -24,7 +24,7 @@ const ItemSpan = styled.span`
   width: ${props => sizeItem[props.size]|| sizeItem['default']};
   margin-top: 50%;
   margin-right: 5px;
-  background: ${props => props.color || '#8a2b06'};
+  background: ${props => props.color || '#fff'};
   transform-origin: right bottom;
   animation: ${load} ${props => props.speed || 2}s ease infinite;
 `;

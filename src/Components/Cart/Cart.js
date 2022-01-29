@@ -11,8 +11,10 @@ import Checkout from "./Checkout";
 const portalElement = document.getElementById("overlay");
 
 const Cart = (props) => {
-  const [isCheckout, setIsCheckout] = useState(false)
+  const [isCheckout, setIsCheckout] = useState(false);
+
   const cartCtx = useContext(CartContext);
+
   const hasItems = cartCtx.items.length > 0;
   const totalAmount = cartCtx.totalAmount.toFixed(2);
 
@@ -25,6 +27,19 @@ const Cart = (props) => {
   };
 
   const checkoutHandler = () => setIsCheckout(true);
+
+  const modalActions = (
+    <div className={classes.btnAction}>
+      <button className={classes.btnClose} onClick={props.close}>
+        Close
+      </button>
+      {hasItems && (
+        <button className={classes.btnOrder} onClick={checkoutHandler}>
+          Order
+        </button>
+      )}
+    </div>
+  );
 
   const items = cartCtx.items.map((item) => {
     return (
@@ -45,16 +60,9 @@ const Cart = (props) => {
           <h4>TotalAmount: </h4>
           <h4>${totalAmount}</h4>
         </div>
-        <div>
-          <button className={classes.btnClose} onClick={props.close}>
-            Close
-          </button>
-          {hasItems && <button className={classes.btnOrder} onClick={checkoutHandler}>Order</button>}
-          
-        </div>
-        
+        {isCheckout && <Checkout close={props.close} />}
+        {! isCheckout && modalActions}
       </div>
-     {isCheckout && <Checkout />}
     </Card>
   );
 };
