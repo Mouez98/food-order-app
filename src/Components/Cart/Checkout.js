@@ -2,67 +2,66 @@ import useInput from "../../hooks/use-input";
 
 import classes from "./Checkout.module.css";
 
-const checkValidity = (value) => value.trim() !== "";
+const stringValidity = (value) => value.trim() !== "";
+const codePostalValidity = value => value.length === 5;
+
 
 const Checkout = (props) => {
   const {
     value: enteredName,
-    hasError: invalidName,
+    hasError: isValidName,
     onChangeHandler: onChangeName,
     onBlurHandler: onBlurName,
     reset: resetName,
-  } = useInput(checkValidity);
+  } = useInput(stringValidity);
 
   const {
     value: enteredStreet,
-    isValid: isValidStreet,
+    hasError: isValidStreet,
     onChangeHandler: onChangeStreet,
     onBlurHandler: onBlurStreet,
     reset: resetStreet,
-  } = useInput(checkValidity);
+  } = useInput(stringValidity);
 
   const {
     value: enteredCode,
-    isValid: isValidCode,
+    hasError: isValidCode,
     onChangeHandler: onChangeCode,
     onBlurHandler: onBlurCode,
     reset: resetCode,
-  } = useInput(checkValidity);
+  } = useInput(codePostalValidity);
 
   const {
     value: enteredCity,
-    isValid: isValidCity,
+    hasError: isValidCity,
     onChangeHandler: onChangeCity,
     onBlurHandler: onBlurCity,
     reset: resetCity,
-  } = useInput(checkValidity);
+  } = useInput(stringValidity);
 
   let validForm = false ;
   if(enteredName && enteredStreet && enteredCode && enteredCity){
     validForm = true
   }
 
-  const classInputName = `${classes.control} ${!invalidName ? '' : classes.invalid}`
-  const invalidInputStreet = isValidStreet ? "control invalid" : "control";
-  const invalidInputCode = isValidCode ? "control invalid" : "control";
-  const invalidInputCity = isValidCity ? "control invalid" : "control";
+  const classInputName = `${classes.control} ${!isValidName ? '' : classes.invalid}`
+  const classInputStreet = `${classes.control} ${!isValidStreet ? '' : classes.invalid}`
+  const classInputCode = `${classes.control} ${isValidCode ? classes.invalid : ''}`
+  const classInputCity = `${classes.control} ${isValidCity ? classes.invalid : ''}`
 
   const confirmHandler = (e) => {
     e.preventDefault();
-    if(!validForm){
-      console.log('NotValid');
-      return
+    if(validForm){
+     resetName();
+     resetStreet();
+     resetCode();
+     resetCity()
     }
-    console.log('Valid');
-
-    resetName();
-    resetStreet();
-    resetCode();
-    resetCity()
+  
   };
   return (
     <form className={classes.form} onSubmit={confirmHandler}>
-      <div className={classes[classInputName]}>
+      <div className={classInputName}>
         <label htmlFor="name">Your Name</label>
         <input
           value={enteredName}
@@ -71,8 +70,9 @@ const Checkout = (props) => {
           onChange={onChangeName}
           onBlur={onBlurName}
         />
+        {isValidName && <p>Please enter your name.</p>}
       </div>
-      <div className={classes[invalidInputStreet]}>
+      <div className={classInputStreet}>
         <label htmlFor="street">Your street</label>
         <input
           type="text"
@@ -81,8 +81,9 @@ const Checkout = (props) => {
           onBlur={onBlurStreet}
           onChange={onChangeStreet}
         />
+        {isValidStreet && <p>Please enter a valid street.</p>}
       </div>
-      <div className={classes[invalidInputCode]}>
+      <div className={classInputCode}>
         <label htmlFor="codePostal">Your Code postal</label>
         <input
           value={enteredCode}
@@ -91,8 +92,9 @@ const Checkout = (props) => {
           type="text"
           id="name"
         />
+        {isValidCode && <p>Please enter a valid Code Postal (5 chars).</p>}
       </div>
-      <div className={classes[invalidInputCity]}>
+      <div className={classInputCity}>
         <label htmlFor="city">Your city</label>
         <input
           type="text"
@@ -101,6 +103,7 @@ const Checkout = (props) => {
           onBlur={onBlurCity}
           onChange={onChangeCity}
         />
+        {isValidName && <p>Please enter a valid city.</p>}
       </div>
       <div className={classes.actions}>
         <button type="button" onClick={props.close}>
