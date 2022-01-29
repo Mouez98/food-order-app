@@ -28,7 +28,7 @@ const isValid = validitiy(valueState.value)
 const hasError = !isValid && valueState.isTouched;
 
 const onChangeHandler = e => dispatch({type: 'INPUT', value: e.target.value});
-const onBlurHandler = e => dispatch({type: 'BLUR'});
+const onBlurHandler = () => dispatch({type: 'BLUR'});
 const reset = () => dispatch({type: 'RESET'});
 
 return {
