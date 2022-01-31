@@ -3,8 +3,7 @@ import useInput from "../../hooks/use-input";
 import classes from "./Checkout.module.css";
 
 const stringValidity = (value) => value.trim() !== "";
-const codePostalValidity = value => value.length === 5;
-
+const codePostalValidity = (value) => value.length === 5;
 
 const Checkout = (props) => {
   const {
@@ -39,26 +38,45 @@ const Checkout = (props) => {
     reset: resetCity,
   } = useInput(stringValidity);
 
-  let validForm = false ;
-  if(enteredName && enteredStreet && enteredCode && enteredCity){
-    validForm = true
-  }
+  const validForm = enteredName && enteredStreet && enteredCode && enteredCity;
 
-  const classInputName = `${classes.control} ${!isValidName ? '' : classes.invalid}`
-  const classInputStreet = `${classes.control} ${!isValidStreet ? '' : classes.invalid}`
-  const classInputCode = `${classes.control} ${isValidCode ? classes.invalid : ''}`
-  const classInputCity = `${classes.control} ${isValidCity ? classes.invalid : ''}`
+  const checkingEachInput = () => {
+    onBlurName();
+    onBlurStreet();
+    onBlurCode();
+    onBlurCity();
+  };
 
   const confirmHandler = (e) => {
     e.preventDefault();
-    if(validForm){
-     resetName();
-     resetStreet();
-     resetCode();
-     resetCity()
+    checkingEachInput()
+    if (validForm) {
+      resetName();
+      resetStreet();
+      resetCode();
+      resetCity();
+      props.onOrder({
+        name: enteredName,
+        street: enteredStreet,
+        postalCode: enteredCode,
+        city: enteredCity
+      })
     }
-  
   };
+
+  const classInputName = `${classes.control} ${
+    !isValidName ? "" : classes.invalid
+  }`;
+  const classInputStreet = `${classes.control} ${
+    !isValidStreet ? "" : classes.invalid
+  }`;
+  const classInputCode = `${classes.control} ${
+    isValidCode ? classes.invalid : ""
+  }`;
+  const classInputCity = `${classes.control} ${
+    isValidCity ? classes.invalid : ""
+  }`;
+
   return (
     <form className={classes.form} onSubmit={confirmHandler}>
       <div className={classInputName}>

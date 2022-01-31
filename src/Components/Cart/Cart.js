@@ -5,13 +5,17 @@ import Backdrop from "../UI/Backdrop";
 import CartContext from "../../store/cart-context";
 import CartContent from "./CartContent";
 import Card from "../UI/Card";
-import classes from "./Cart.module.css";
 import Checkout from "./Checkout";
+import Loading from '../../imported/Loading'
+
+import classes from "./Cart.module.css";
 
 const portalElement = document.getElementById("overlay");
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const cartCtx = useContext(CartContext);
 
@@ -27,6 +31,23 @@ const Cart = (props) => {
   };
 
   const checkoutHandler = () => setIsCheckout(true);
+
+  const onSubmitOrder = (userData) => {
+    setIsSubmitting(true);
+    fetch(
+      "https://food-order-2a829-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          data: userData,
+          orderItems: cartCtx.items,
+        }),
+      }
+    );
+    cartCtx.clearItems()
+    setIsSubmitting(false);
+    setDidSubmit(true);
+  };
 
   const modalActions = (
     <div className={classes.btnAction}>
@@ -51,18 +72,38 @@ const Cart = (props) => {
       />
     );
   });
-
-  return (
-    <Card className={classes["cart-items"]}>
+  const modalContent = (
+    <>
       {items}
       <div className={classes.order}>
         <div className={classes.totalPrice}>
           <h4>TotalAmount: </h4>
           <h4>${totalAmount}</h4>
         </div>
-        {isCheckout && <Checkout close={props.close} />}
-        {! isCheckout && modalActions}
+        {isCheckout && <Checkout onOrder={onSubmitOrder} close={props.close} />}
+        {!isCheckout && modalActions}
       </div>
+    </>
+  );
+
+  const isSubmittingContent = <Loading color="#4d1601"/> ;
+
+  const didSubmitContent = (
+    <>
+      <p>Successfully sent the order.</p>
+      <div className={classes.btnAction}>
+        <button className={classes.btnOrder} onClick={props.close}>
+          Okay
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <Card className={classes["cart-items"]}>
+      {!isSubmitting && !didSubmit && modalContent}
+      {isSubmitting && isSubmittingContent}
+      {didSubmit && didSubmitContent}
     </Card>
   );
 };
